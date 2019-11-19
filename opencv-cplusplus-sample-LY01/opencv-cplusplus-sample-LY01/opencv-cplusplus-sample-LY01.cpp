@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 		bitwise_not(thresholdImage, invertedImage);
 		showImage("Rock 4 - bitwise_not(thresholdImage, invertedImage);", invertedImage);
 
+		// Wait
 		waitKey(0);
 	}
 
