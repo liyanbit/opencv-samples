@@ -18,30 +18,49 @@ void showImage(string windowName, Mat image)
 
 int main(int argc, char** argv)
 {
+	Mat originalImage;
+	bool imageLoaded = false;
+
+#if defined _DEBUG
+	if (argc < 2)
+	{
+		// Default image for demo
+		originalImage = imread("Sample-01-Rock.jpg", CV_LOAD_IMAGE_COLOR);
+		imageLoaded = true;
+	}
+#endif
+
 	if (argc > 1)
 	{
 		// Load original image
 		Mat originalImage = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-		showImage("Rock 1 - Original Image", originalImage);
-
-		// Convert color image to grey-scale
-		Mat greyImage;
-		cvtColor(originalImage, greyImage, COLOR_BGR2GRAY);
-		showImage("Rock 2 - cvtColor(originalImage, greyImage, COLOR_BGR2GRAY)", greyImage);
-
-		// Filter by grey-scale depth
-		Mat thresholdImage;
-		threshold(greyImage, thresholdImage, 120, 255, THRESH_BINARY);
-		showImage("Rock 3 - threshold(greyImage, thresholdImage, 120, 255, THRESH_BINARY)", thresholdImage);
-
-		// Invert color
-		Mat invertedImage;
-		bitwise_not(thresholdImage, invertedImage);
-		showImage("Rock 4 - bitwise_not(thresholdImage, invertedImage);", invertedImage);
-
-		// Wait
-		waitKey(0);
+		imageLoaded = true;
 	}
+
+	if (!imageLoaded)
+	{
+		return -1;
+	}
+
+	showImage("Rock 1 - Original Image", originalImage);
+
+	// Convert color image to grey-scale
+	Mat greyImage;
+	cvtColor(originalImage, greyImage, COLOR_BGR2GRAY);
+	showImage("Rock 2 - cvtColor(originalImage, greyImage, COLOR_BGR2GRAY)", greyImage);
+
+	// Filter by grey-scale depth
+	Mat thresholdImage;
+	threshold(greyImage, thresholdImage, 120, 255, THRESH_BINARY);
+	showImage("Rock 3 - threshold(greyImage, thresholdImage, 120, 255, THRESH_BINARY)", thresholdImage);
+
+	// Invert color
+	Mat invertedImage;
+	bitwise_not(thresholdImage, invertedImage);
+	showImage("Rock 4 - bitwise_not(thresholdImage, invertedImage);", invertedImage);
+
+	// Wait
+	waitKey(0);
 
 	return 0;
 }
