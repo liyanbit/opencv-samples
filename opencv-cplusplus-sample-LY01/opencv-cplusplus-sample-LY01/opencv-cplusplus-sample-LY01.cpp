@@ -62,6 +62,8 @@ int main(int argc, char** argv)
 	// Wait
 	waitKey(0);
 
+	// This comment line is added by PatrickWangBit on web
+	
 	return 0;
 }
 
