@@ -63,7 +63,9 @@ int main(int argc, char** argv)
 	waitKey(0);
 
 	// This comment line is added by PatrickWangBit on web
-	
+
+	// This comment line is added by LiYanBit from VS2015@Home
+
 	return 0;
 }
 
