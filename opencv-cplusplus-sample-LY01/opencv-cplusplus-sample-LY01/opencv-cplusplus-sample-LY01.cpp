@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
 	if (!imageLoaded)
 	{
-		// Something wrong when loading image????
+		// Something wrong when loading image
 		return -1;
 	}
 
@@ -48,17 +48,27 @@ int main(int argc, char** argv)
 	// Convert color image to grey-scale
 	Mat greyImage;
 	cvtColor(originalImage, greyImage, COLOR_BGR2GRAY);
-	showImage("Rock 2 - cvtColor(originalImage, greyImage, COLOR_BGR2GRAY)", greyImage);
+	showImage("Rock 2 - cvtColor", greyImage);
 
 	// Filter by grey-scale depth
 	Mat thresholdImage;
 	threshold(greyImage, thresholdImage, 120, 255, THRESH_BINARY);
-	showImage("Rock 3 - threshold(greyImage, thresholdImage, 120, 255, THRESH_BINARY)", thresholdImage);
+	showImage("Rock 3 - threshold 120, 255", thresholdImage);
 
 	// Invert color
 	Mat invertedImage;
 	bitwise_not(thresholdImage, invertedImage);
-	showImage("Rock 4 - bitwise_not(thresholdImage, invertedImage);", invertedImage);
+	showImage("Rock 4 - bitwise_not", invertedImage);
+
+	// Filter by grey-scale depth 2
+	Mat thresholdImage2;
+	threshold(greyImage, thresholdImage2, 80, 255, THRESH_BINARY);
+	showImage("Rock 5 - threshold 80, 255", thresholdImage2);
+
+	// Invert color 2
+	Mat invertedImage2;
+	bitwise_not(thresholdImage2, invertedImage2);
+	showImage("Rock 6 - bitwise_not", invertedImage2);
 
 	// Wait
 	waitKey(0);
