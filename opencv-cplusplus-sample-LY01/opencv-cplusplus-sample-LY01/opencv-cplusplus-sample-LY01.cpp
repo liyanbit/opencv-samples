@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
 	if (!imageLoaded)
 	{
-		// Something wrong when loading image?
+		// Something wrong when loading image??
 		return -1;
 	}
 
