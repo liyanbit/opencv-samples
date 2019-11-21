@@ -66,6 +66,8 @@ int main(int argc, char** argv)
 
 	// This comment line is added by LiYanBit from VS2015@Home
 
+	// This comment line is added by LiYanBit from VS2015@Work
+
 	return 0;
 }
 
