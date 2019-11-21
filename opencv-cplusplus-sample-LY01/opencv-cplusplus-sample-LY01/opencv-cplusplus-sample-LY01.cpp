@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 	if (argc > 1)
 	{
 		// Load original image
-		Mat originalImage = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+		originalImage = imread(argv[1], CV_LOAD_IMAGE_COLOR);
 		imageLoaded = true;
 	}
 
