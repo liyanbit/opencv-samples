@@ -163,6 +163,7 @@
   <ItemGroup>
     <Image Include="Sample-01-Rock.jpg" />
     <Image Include="Sample-02-ColorBlocks.jpg" />
+    <Image Include="Sample-03-Face.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

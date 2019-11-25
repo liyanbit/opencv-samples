@@ -43,5 +43,8 @@
     <Image Include="Sample-02-ColorBlocks.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sample-03-Face.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

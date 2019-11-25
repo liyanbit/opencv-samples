@@ -29,6 +29,8 @@ int main(int argc, char** argv)
 		originalImage = imread("Sample-01-Rock.jpg", CV_LOAD_IMAGE_COLOR);
 		// Another sample image
 		//originalImage = imread("Sample-02-ColorBlocks.jpg", CV_LOAD_IMAGE_COLOR);
+		// Another sample image
+		originalImage = imread("Sample-03-Face.jpg", CV_LOAD_IMAGE_COLOR);
 		imageLoaded = true;
 	}
 #endif
@@ -65,7 +67,6 @@ int main(int argc, char** argv)
 	Mat thresholdImageA;
 	threshold(greyImage, thresholdImageA, thresholdA, 255, THRESH_BINARY);
 	showImage(400, 0, "A - threshold", thresholdImageA);
-
 	// A - Invert color
 	Mat invertedImageA;
 	bitwise_not(thresholdImageA, invertedImageA);
@@ -75,7 +76,6 @@ int main(int argc, char** argv)
 	Mat thresholdImageB;
 	threshold(greyImage, thresholdImageB, thresholdB, 255, THRESH_BINARY);
 	showImage(800, 0, "B - threshold", thresholdImageB);
-
 	// B - Invert color
 	Mat invertedImageB;
 	bitwise_not(thresholdImageB, invertedImageB);
