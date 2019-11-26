@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 		// Another sample image
 		//originalImage = imread("Sample-02-ColorBlocks.jpg", CV_LOAD_IMAGE_COLOR);
 		// Another sample image
-		originalImage = imread("Sample-03-Face.jpg", CV_LOAD_IMAGE_COLOR);
+		//originalImage = imread("Sample-03-Face.jpg", CV_LOAD_IMAGE_COLOR);
 		imageLoaded = true;
 	}
 #endif
@@ -53,67 +53,97 @@ int main(int argc, char** argv)
 	colors[1] = cv::Scalar(0, 255, 0);
 	colors[2] = cv::Scalar(0, 0, 255);
 
-	int thresholdA = 120;
-	int thresholdB = 40;
+	int threshold, Y, X_shift;
 
 	showImage(0, 0, "Original Image", originalImage);
-
-	// 0 - Convert color image to grey-scale
+	// Convert color image to grey-scale
 	Mat greyImage;
 	cvtColor(originalImage, greyImage, COLOR_BGR2GRAY);
-	showImage(0, 300, "0 - COLOR_BGR2GRAY", greyImage);
+	showImage(400, 0, "COLOR_BGR2GRAY", greyImage);
 
-	// A - Filter by grey-scale depth
-	Mat thresholdImageA;
-	threshold(greyImage, thresholdImageA, thresholdA, 255, THRESH_BINARY);
-	showImage(400, 0, "A - threshold", thresholdImageA);
-	// A - Invert color
-	Mat invertedImageA;
-	bitwise_not(thresholdImageA, invertedImageA);
-	showImage(400, 300, "A - bitwise_not", invertedImageA);
-
-	// B - Filter by grey-scale depth
-	Mat thresholdImageB;
-	threshold(greyImage, thresholdImageB, thresholdB, 255, THRESH_BINARY);
-	showImage(800, 0, "B - threshold", thresholdImageB);
-	// B - Invert color
-	Mat invertedImageB;
-	bitwise_not(thresholdImageB, invertedImageB);
-	showImage(800, 300, "B - bitwise_not", invertedImageB);
-
-	// 0 - Find the contours
-	std::vector<std::vector<cv::Point> > contours;
-	cv::Mat contourOutput = greyImage.clone();
-	cv::findContours(contourOutput, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-	// A - Find the contours
-	std::vector<std::vector<cv::Point> > contoursA;
-	cv::Mat contourOutputA = thresholdImageA.clone();
-	cv::findContours(contourOutputA, contoursA, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-	// B - Find the contours
-	std::vector<std::vector<cv::Point> > contoursB;
-	cv::Mat contourOutputB = thresholdImageB.clone();
-	cv::findContours(contourOutputB, contoursB, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-
-	// 0 - Draw the contours
-	cv::Mat contourImage(contourOutput.size(), CV_8UC3, cv::Scalar(0, 0, 0));
-	for (size_t idx = 0; idx < contours.size(); idx++)
+	threshold = 120;
+	Y = 300;
+	X_shift = 400;
 	{
-		cv::drawContours(contourImage, contours, idx, colors[idx % 3]);
+		// Filter by grey-scale depth
+		Mat thresholdImage;
+		cv::threshold(greyImage, thresholdImage, threshold, 255, THRESH_BINARY);
+		showImage(0, Y, to_string(threshold)+" - threshhold", thresholdImage);
+		// Invert color
+		Mat invertedImage;
+		bitwise_not(thresholdImage, invertedImage);
+		showImage(X_shift, Y, to_string(threshold) + " - bitwise_not", invertedImage);
+
+		cv::Mat kernel = cv::getStructuringElement(CV_SHAPE_CROSS, cv::Size(3, 3));
+		std::vector<std::vector<cv::Point> > contours;
+		cv::Mat contourOutput;
+		cv::Mat contourImage;
+
+		// Find the contours on threshold image
+		contourOutput = thresholdImage.clone();
+		cv::findContours(contourOutput, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+		// Draw the contours
+		contourImage = cv::Mat(contourOutput.size(), CV_8UC3, cv::Scalar(0, 0, 0));
+		for (size_t idx = 0; idx < contours.size(); idx++)
+		{
+			cv::drawContours(contourImage, contours, idx, colors[idx % 3]);
+		}
+		showImage(X_shift*2, Y, to_string(threshold) + " - contours", contourImage);
+
+		// Find the contours of dilated inverted image
+		cv::Mat dilated;
+		cv::dilate(invertedImage, dilated, kernel, cv::Point(-1, -1), 9);
+		contourOutput = dilated.clone();
+		cv::findContours(contourOutput, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+		// Draw the contours
+		contourImage = cv::Mat(contourOutput.size(), CV_8UC3, cv::Scalar(0, 0, 0));
+		for (size_t idx = 0; idx < contours.size(); idx++) {
+			cv::drawContours(contourImage, contours, idx, colors[idx % 3]);
+		}
+		showImage(X_shift*3, Y, to_string(threshold) + " - dilated contours", contourImage);
 	}
-	showImage(0, 600, "0 - contours", contourImage);
-	// A - Draw the contours
-	cv::Mat contourImageA(contourOutputA.size(), CV_8UC3, cv::Scalar(0, 0, 0));
-	for (size_t idx = 0; idx < contoursA.size(); idx++)
+
+	threshold = 60;
+	Y = 600;
+	X_shift = 400;
 	{
-		cv::drawContours(contourImageA, contoursA, idx, colors[idx % 3]);
+		// Filter by grey-scale depth
+		Mat thresholdImage;
+		cv::threshold(greyImage, thresholdImage, threshold, 255, THRESH_BINARY);
+		showImage(0, Y, to_string(threshold) + " - threshhold", thresholdImage);
+		// Invert color
+		Mat invertedImage;
+		bitwise_not(thresholdImage, invertedImage);
+		showImage(X_shift, Y, to_string(threshold) + " - bitwise_not", invertedImage);
+
+		cv::Mat kernel = cv::getStructuringElement(CV_SHAPE_CROSS, cv::Size(3, 3));
+		std::vector<std::vector<cv::Point> > contours;
+		cv::Mat contourOutput;
+		cv::Mat contourImage;
+
+		// Find the contours on threshold image
+		contourOutput = thresholdImage.clone();
+		cv::findContours(contourOutput, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+		// Draw the contours
+		contourImage = cv::Mat(contourOutput.size(), CV_8UC3, cv::Scalar(0, 0, 0));
+		for (size_t idx = 0; idx < contours.size(); idx++)
+		{
+			cv::drawContours(contourImage, contours, idx, colors[idx % 3]);
+		}
+		showImage(X_shift * 2, Y, to_string(threshold) + " - contours", contourImage);
+
+		// Find the contours of dilated inverted image
+		cv::Mat dilated;
+		cv::dilate(invertedImage, dilated, kernel, cv::Point(-1, -1), 9);
+		contourOutput = dilated.clone();
+		cv::findContours(contourOutput, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+		// Draw the contours
+		contourImage = cv::Mat(contourOutput.size(), CV_8UC3, cv::Scalar(0, 0, 0));
+		for (size_t idx = 0; idx < contours.size(); idx++) {
+			cv::drawContours(contourImage, contours, idx, colors[idx % 3]);
+		}
+		showImage(X_shift * 3, Y, to_string(threshold) + " - dilated contours", contourImage);
 	}
-	showImage(400, 600, "A - contours", contourImageA);
-	// B - Draw the contours
-	cv::Mat contourImageB(contourOutputB.size(), CV_8UC3, cv::Scalar(0, 0, 0));
-	for (size_t idx = 0; idx < contoursB.size(); idx++) {
-		cv::drawContours(contourImageB, contoursB, idx, colors[idx % 3]);
-	}
-	showImage(800, 600, "B - contours", contourImageB);
 
 	// Wait
 	waitKey(0);
