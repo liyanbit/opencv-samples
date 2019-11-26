@@ -48,23 +48,22 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	cv::Scalar colors[3];
-	colors[0] = cv::Scalar(255, 90, 0);
-	colors[1] = cv::Scalar(0, 255, 0);
-	colors[2] = cv::Scalar(0, 0, 255);
-
-	int threshold, Y, X_shift;
-
 	showImage(0, 0, "Original Image", originalImage);
 	// Convert color image to grey-scale
 	Mat greyImage;
 	cvtColor(originalImage, greyImage, COLOR_BGR2GRAY);
 	showImage(400, 0, "COLOR_BGR2GRAY", greyImage);
 
-	threshold = 120;
-	Y = 300;
-	X_shift = 400;
 	{
+		int threshold = 120;
+		int Y = 300;
+		int X_shift = 400;
+
+		cv::Scalar colors[3];
+		colors[0] = cv::Scalar(255, 90, 0);
+		colors[1] = cv::Scalar(0, 255, 0);
+		colors[2] = cv::Scalar(0, 0, 255);
+
 		// Filter by grey-scale depth
 		Mat thresholdImage;
 		cv::threshold(greyImage, thresholdImage, threshold, 255, THRESH_BINARY);
@@ -103,10 +102,16 @@ int main(int argc, char** argv)
 		showImage(X_shift*3, Y, to_string(threshold) + " - dilated contours", contourImage);
 	}
 
-	threshold = 60;
-	Y = 600;
-	X_shift = 400;
 	{
+		int threshold = 60;
+		int Y = 600;
+		int X_shift = 400;
+
+		cv::Scalar colors[3];
+		colors[0] = cv::Scalar(255, 90, 0);
+		colors[1] = cv::Scalar(0, 255, 0);
+		colors[2] = cv::Scalar(0, 0, 255);
+
 		// Filter by grey-scale depth
 		Mat thresholdImage;
 		cv::threshold(greyImage, thresholdImage, threshold, 255, THRESH_BINARY);
